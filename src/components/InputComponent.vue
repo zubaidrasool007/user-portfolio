@@ -26,16 +26,16 @@ export default defineComponent({
 <template>
     <van-form @submit="onSubmit" class="form">
         <van-row>
-            <h2 class="title">User Profile</h2>
+            <h2 class="title">{{$t('message.title')}}</h2>
         </van-row>
         <van-row>
             <van-col span="12" class="form-col">
-                <van-field v-model="firstname" name="Firsname" label="Firsname" placeholder="Firsname"
-                    :rules="[{ required: true, message: 'Firsname is required' }]" />
-                <van-field v-model="lastname" name="Lastname" label="Lastname" placeholder="Lastname"
-                    :rules="[{ required: true, message: 'Lastname is required' }]" />
-                <van-field v-model="email" name="Email" label="Email" placeholder="Email"
-                    :rules="[{ required: true, message: 'Email is required' }]" />
+                <van-field v-model="firstname" name="Firsname" :label="$t('message.firstName')"
+                    :rules="[{ required: true, message: $t('message.firstNameError') }]" />
+                <van-field v-model="lastname" name="Lastname" :label="$t('message.lastName')"
+                    :rules="[{ required: true, message: $t('message.lastNameError') }]" />
+                <van-field v-model="email" name="Email" :label="$t('message.email')"
+                    :rules="[{ required: true, message: $t('message.emailError') }]" />
             </van-col>
             <van-col span="12" class="image-container">
                 <ImageSelector />

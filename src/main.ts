@@ -1,6 +1,12 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import { Field, Uploader } from 'vant';
+import App from './App.vue';
 
-import './assets/main.css'
+import 'vant/lib/index.css';
+import './assets/main.css';
 
-createApp(App).mount('#app')
+const app = createApp(App);
+app.use(Field);
+app.use(Uploader);
+
+app.mount('#app');

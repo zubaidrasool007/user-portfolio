@@ -1,13 +1,13 @@
 <script lang="ts">
 import ImageSelector from './ImageSelector.vue';
-
+import InputComponent from "./InputComponent.vue"
 import { defineComponent } from 'vue';
 export default defineComponent({
-    components: { ImageSelector },
+    components: { ImageSelector, InputComponent },
 });
 
 </script>
 
 <template>
-    <ImageSelector />
+    <InputComponent />
 </template>

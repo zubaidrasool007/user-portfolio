@@ -1,11 +1,77 @@
 @import './base.css';
 
 #app {
-  max-width: 1280px;
+  max-width: 700px;
   margin: 0 auto;
   padding: 2rem;
-
+  width: 100%;
   font-weight: normal;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.form .van-cell {
+  flex-direction: column;
+}
+
+.form .van-cell::after {
+  border-bottom: unset;
+}
+
+.form .van-field__control {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 5px;
+}
+
+.form .van-field__control--custom {
+  justify-content: center;
+  border: none;
+}
+
+.form .van-uploader__upload,
+.form .van-uploader__preview-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+}
+
+.image-container {
+  display: flex;
+  align-items: center;
+}
+
+.form .van-uploader__wrapper {
+  justify-content: center;
+  align-items: center;
+}
+
+.form .van-button {
+  padding: 0 15px;
+}
+
+@media screen and (max-width:600px) {
+  .title {
+    width: 100%;
+    text-align: center;
+  }
+
+  .form .van-row {
+    flex-wrap: wrap-reverse;
+  }
+
+  .form-col,
+  .image-container {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .btn-container {
+    justify-content: center;
+    margin-top: 1rem;
+  }
 }
 
 a,
@@ -21,15 +87,15 @@ a,
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 600px) {
   body {
     display: flex;
     place-items: center;
   }
 
   #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

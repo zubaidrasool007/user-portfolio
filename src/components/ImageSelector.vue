@@ -12,7 +12,7 @@ export default defineComponent({
 <template>
     <van-field name="uploader">
         <template #input>
-            <van-uploader v-model="value" :rules="[{ required: true, message: $t('message.imageError') }]"/>
+            <van-uploader v-model="value" :max-count="1" :rules="[{ required: true, message: $t('message.imageError') }]"/>
         </template>
     </van-field>
 </template>

@@ -1,7 +1,7 @@
 @import './base.css';
 
 #app {
-  max-width: 700px;
+  max-width: 550px;
   margin: 0 auto;
   padding: 2rem;
   width: 100%;
@@ -31,11 +31,11 @@
   border: none;
 }
 
-.form .van-uploader__upload,
-.form .van-uploader__preview-image {
-  width: 120px;
-  height: 120px;
-  border-radius: 8px;
+.van-uploader__upload,
+.van-uploader__preview-image {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
 }
 
 .image-container {
@@ -43,13 +43,19 @@
   align-items: center;
 }
 
-.form .van-uploader__wrapper {
+.van-uploader__wrapper {
   justify-content: center;
   align-items: center;
 }
 
-.form .van-button {
-  padding: 0 15px;
+.van-button {
+  padding: 0 20px;
+}
+
+.image-container .van-cell__value.van-field__value {
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }
 
 @media screen and (max-width:600px) {
@@ -58,8 +64,17 @@
     text-align: center;
   }
 
-  .form .van-row {
+  .page-container>.van-row {
+    text-align: center;
     flex-wrap: wrap-reverse;
+    justify-content: center;
+  }
+
+  .van-uploader__upload,
+  .van-uploader__preview-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
   }
 
   .form-col,

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import UserForm from './components/UserForm.vue';
+import Page from './components/Page.vue';
 </script>
 
 <template>
   <main>
-    <UserForm />
+    <Page />
   </main>
 </template>
 

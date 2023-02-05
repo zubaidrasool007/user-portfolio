@@ -2,6 +2,6 @@ export interface User {
     firstName: string,
     lastName: string,
     email: string,
-    image: File,
+    avatar: File | undefined,
 };
 

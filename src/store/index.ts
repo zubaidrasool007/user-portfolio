@@ -1,24 +1,21 @@
 import { createStore } from 'vuex';
 import type { User } from '../models/user.model';
 interface State {
-    users: Array<User>,
+    user: User | null,
 }
 
-export default createStore<State>({
+const store =  createStore<State>({
     state: {
-        users: [],
+        user: null,
     },
-    getters: {
-        getUsers: (state) => state.users,
-    },
-    actions: {
-        async setUserData({ commit }, user) {
-            commit('SET_NEW_USER', user);
-        },
-    },
+
     mutations: {
-        store(state, user: User) {
-            state = {...state, users: [...state.users, user] }
+        updateUserInformation(state, user: User){
+            state = {...state, user: user }
         },
     }
 });
+
+export type RootState =  typeof store;
+
+export default store;

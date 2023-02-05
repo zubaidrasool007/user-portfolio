@@ -1,80 +1,91 @@
-<script lang="ts">
-import ImageSelector from './ImageSelector.vue';
-import FormComponent from "./FormComponent.vue"
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { useStore } from 'vuex'
+import ImageSelector from "./ImageSelector.vue";
+import UserDetailForm from "./FormComponent.vue";
+import { defineComponent, ref, computed } from "vue";
+import type {
+  UploaderAfterRead,
+  UploaderFileListItem,
+} from "vant/lib/uploader/types";
+import type { User } from "../models/user.model";
+import type { RootState } from "../store/index"
 
-interface CustomEvent {
-    type: string,
-    value: string
-};
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-export default defineComponent({
-    components: { ImageSelector, FormComponent },
-    setup() {
-        let firstname = '';
-        let lastname = '';
-        let email = '';
-        let image: File = new File([], '');
-        const onFormChange = (event: CustomEvent) => {
-            switch (event.type) {
-                case 'firstname':
-                    firstname = event.value;
-                    break;
-                case 'lastname':
-                    lastname = event.value;
-                    break;
-                case 'email':
-                    email = event.value;
-                    break;
-                default:
-                    break;
-            };
-            console.log({ firstname, lastname, email });            
-        };
-        const onImageChange = (value: any) => {
-            image = value.file;
-            console.log('Image changed called!!!', image)
-        };
-        const isUserValid = () => {
-            return image?.name.length > 0;
-        };
-        const onSubmit = () => {
-            console.log(isUserValid(), "onSubmit", { firstname, lastname, email, image })
-        };
-        return {
-            firstname,
-            lastname,
-            email,
-            image,
-            onImageChange,
-            onFormChange,
-            isUserValid,
-            onSubmit,
-        };
-    },
+// User object initialization
+const user = ref<User>({
+  firstName: "",
+  lastName: "",
+  email: "",
+  avatar: undefined,
 });
 
+// Commit from useStore is used for mutations to be called in the store
+const { commit } = useStore<RootState>()
+
+/**
+ * Form validation being checked
+ * as first name, last name and email are required so these are necessary to fill
+ * also checking the value in email input is valid or not
+ */
+const isFormInvalid = computed(
+  () => !user.value.firstName || !user.value.lastName || !user.value.email || !EMAIL_REGEX.test(user.value.email)
+);
+
+/**
+ * @param { User } fields is user data except the image/avatar property
+ * This function is called from the child component (FormComponent)
+ * to receive the inputs of the user
+ */
+const updateUserForm = (fields: Omit<User, "avatar">) => {
+  user.value = { ...user.value, ...fields };
+};
+
+/**
+ * This function is called from ImageSelector when an image is uploaded
+ * or already removed uploaded image is removed.
+ * @param { UploaderAfterRead } upload is the uploaded image from ImageSelector component
+ */
+const onImageChange = (upload: UploaderAfterRead) => {
+  user.value.avatar = (upload as UploaderFileListItem).file;
+};
+
+/**
+ * Save user information into vuex store by calling its mutation `updateUserInformation`
+ */
+const saveUserInformation = () => {
+    commit('updateUserInformation', user.value)
+}
 </script>
 
 <template>
+  <van-form class="form" @submit="saveUserInformation">
     <van-row>
-        <h2 class="title">{{ $t('message.title') }}</h2>
+      <h2 class="title">{{ $t("message.title") }}</h2>
     </van-row>
     <div class="page-container">
-    <van-row>
+      <van-row>
         <van-col span="12">
-            <FormComponent @value-changed="onFormChange" />
+          <UserDetailForm @update-user="updateUserForm" />
         </van-col>
         <van-col span="12" class="image-container">
-            <ImageSelector @image-changed="onImageChange" />
+          <ImageSelector @image-change="onImageChange" />
         </van-col>
-    </van-row>
-</div>
+      </van-row>
+    </div>
     <van-row justify="end" class="btn-container">
-        <van-col>
-            <van-button :disabled="isUserValid" @click="onSubmit" round block type="primary" size="small" native-type="submit">
-                Submit
-            </van-button>
-        </van-col>
+      <van-col>
+        <van-button
+          :disabled="isFormInvalid"
+          round
+          block
+          type="primary"
+          size="small"
+          native-type="submit"
+        >
+          Submit
+        </van-button>
+      </van-col>
     </van-row>
+  </van-form>
 </template>

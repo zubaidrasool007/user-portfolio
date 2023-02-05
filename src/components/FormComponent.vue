@@ -1,40 +1,38 @@
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
-export default defineComponent({
-    setup() {
-        let firstname = ref('');
-        let lastname = ref('');
-        let email = ref('');
-        return {
-            firstname,
-            lastname,
-            email,
-        };
-    },
-    emits: [
-        'valueChanged',
-    ],
+<script setup lang="ts">
+import type { User } from "@/models/user.model";
+import { reactive, watch } from "vue";
+
+// Omit the avatar property from User interface as image is not uploaded from here
+type UserForm = Omit<User, 'avatar'>;
+type Props = {
+  onUpdateUser: (user: UserForm) => void;
+}
+
+const { onUpdateUser } = defineProps<Props>();
+
+// Creating reactive copy of user object to bind with the inputs
+const user = reactive<UserForm>({ firstName: "", lastName: "", email: ''})
+
+/**
+ * Watch is observing the inputs change
+ * when ever there is a change in the input
+ * it will call the onUpdateUser in the page component
+ */
+watch(user, (updatedUser) => {
+  onUpdateUser(updatedUser);
 });
 
 </script>
 <template>
-    <van-form class="form">
-        <van-row>
-            <van-col class="form-col">
-                <van-field v-model="firstname" @keyup="$emit('valueChanged', { type: 'firstname', value: firstname })"
-                    name="firsname" :label="$t('message.firstName')"
-                    :rules="[{ required: true, message: $t('message.firstNameError') }]" />
-            </van-col>
-            <van-col class="form-col">
-                <van-field v-model="lastname" @keyup="$emit('valueChanged', { type: 'lastname', value: lastname })"
-                    name="lastname" :label="$t('message.lastName')"
-                    :rules="[{ required: true, message: $t('message.lastNameError') }]" />
-            </van-col>
-            <van-col class="form-col">
-                <van-field v-model="email" @keyup="$emit('valueChanged', { type: 'email', value: email })"
-                    name="email" :label="$t('message.email')"
-                    :rules="[{ required: true, message: $t('message.emailError') }]" />
-            </van-col>
-        </van-row>
-    </van-form>
+    <van-row>
+      <van-col class="form-col">
+        <van-field :label="$t('message.firstName')" id="first-name" required  v-model="user.firstName" />
+      </van-col>
+      <van-col class="form-col">
+        <van-field :label="$t('message.lastName')" id="last-name" required v-model="user.lastName" />
+      </van-col>
+      <van-col class="form-col">
+        <van-field required :label="$t('message.email')" id="email" type="email" v-model="user.email" />
+      </van-col>
+    </van-row>
 </template>
